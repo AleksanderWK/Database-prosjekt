@@ -1,5 +1,5 @@
 # Database
 
 ## Setting up eclipse
-* Import /databaseprosjekt in eclipse as a prosject
+* Make a new java projekt to /databaseprosjekt in eclipse
 * Go to Properties -> Build Path -> Libraries -> Add external JARs -> add mysql-connector-java-8.0.19.jar
