@@ -33,8 +33,8 @@ public class MovieController extends DBConn {
 	public Collection<String> roleNamesOfActorByName(String actorName) {
 		try {
 			currentStatement = conn.prepareStatement(
-					"select personID "
-					+ "from skuespiller natural join person "
+					"select distinct personID "
+					+ "from skuespilleriverk natural join person "
 					+ "where navn = ?"
 				);
 			currentStatement.setString(1, actorName);
@@ -54,7 +54,7 @@ public class MovieController extends DBConn {
 			currentStatement = conn.prepareStatement(
 					"select distinct rolle "
 					+ "from skuespilleriverk as spiv "
-					+ "where spiv.skuespillerID = ?");
+					+ "where spiv.personID = ?");
 			currentStatement.setInt(1, actorID);
 			ResultSet result = currentStatement.executeQuery();
 			while(result.next()) {
@@ -72,8 +72,8 @@ public class MovieController extends DBConn {
 		Collection<String[]> actorRows = new ArrayList<String[]>();
 		try {
 			currentStatement = conn.prepareStatement(
-					"select * "
-					+ "from skuespiller natural join person"
+					"select distinct personID, navn, foedselsaar, foedselsland "
+					+ "from skuespillerIVerk natural join person"
 					);
 			ResultSet result = currentStatement.executeQuery();
 			while (result.next()) {
