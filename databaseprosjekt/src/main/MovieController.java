@@ -67,4 +67,22 @@ public class MovieController extends DBConn {
 		
 		return roleNames;
 	}
+	
+	public Collection<String[]> getAllActors() {
+		Collection<String[]> actorRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from skuespiller natural join person"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("personID")).toString(), result.getString("navn"), result.getString("foedselsaar"), result.getString("foedselsland")};
+				actorRows.add(row);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actorRows;
+	}
 }
