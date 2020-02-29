@@ -43,9 +43,8 @@ public class Main {
 				printTable(movieCtrl.getMoviesFromActor(actor));
 				break;
 			case 3:
-				
+				printTable(movieCtrl.mostMoviesInGeneres());
 				break;
-				
 			case 4:
 				
 				break;

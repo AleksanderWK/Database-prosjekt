@@ -104,4 +104,24 @@ public class MovieController extends DBConn {
 		}
 		return moviesFromActor;
 	}
+	
+	public Collection<String[]> mostMoviesInGeneres(){
+		Collection<String[]> r = new ArrayList<>();
+		try {
+			currentStatement = conn.prepareStatement("");
+			ResultSet result = currentStatement.executeQuery();
+			while(result.next()) {
+				String[] record = {result.getString("navn"), result.getString("adresse")}; //adresse er navn på selskap (?)
+				r.add(record);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return r;
+	}
+	
+	
+	
+	
 }
