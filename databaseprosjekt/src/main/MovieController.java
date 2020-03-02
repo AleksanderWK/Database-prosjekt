@@ -85,4 +85,43 @@ public class MovieController extends DBConn {
 		}
 		return actorRows;
 	}
+	
+	public Collection<String[]> getMoviesFromActor(String ActorName){
+		Collection<String[]> moviesFromActor = new ArrayList<>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select tittel " 
+					 + "from (skuespilleriverk natural join verk) natural join person " 
+					 + "where navn = " + "'" + ActorName + "'");
+			ResultSet result = currentStatement.executeQuery();
+			while(result.next()) {
+				String[] record = {result.getString("tittel")};
+				moviesFromActor.add(record);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return moviesFromActor;
+	}
+	
+	public Collection<String[]> mostMoviesInGeneres(){
+		Collection<String[]> r = new ArrayList<>();
+		try {
+			currentStatement = conn.prepareStatement("");
+			ResultSet result = currentStatement.executeQuery();
+			while(result.next()) {
+				String[] record = {result.getString("navn"), result.getString("adresse")}; //adresse er navn på selskap (?)
+				r.add(record);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return r;
+	}
+	
+	
+	
+	
 }
