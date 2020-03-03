@@ -108,10 +108,15 @@ public class MovieController extends DBConn {
 	public Collection<String[]> mostMoviesInGeneres(){
 		Collection<String[]> r = new ArrayList<>();
 		try {
-			currentStatement = conn.prepareStatement("");
+			currentStatement = conn.prepareStatement(
+					"select sjanger, selskap, max(SSF.antallFilmer) as 'Max antall' " + 
+					"from (select adresse as Selskap, navn as Sjanger, count(navn) as antallFilmer " + 
+					"		from ((((verk natural join verksjanger) natural join selskapverk) natural join sjanger) natural join selskap) " + 
+					"		group by adresse, navn) as SSF " + 
+					"group by sjanger, selskap");
 			ResultSet result = currentStatement.executeQuery();
 			while(result.next()) {
-				String[] record = {result.getString("navn"), result.getString("adresse")}; //adresse er navn på selskap (?)
+				String[] record = {result.getString("sjanger"), result.getString("selskap"), result.getString("Max antall")}; //adresse er navn på selskap (?)
 				r.add(record);
 			}
 		} catch (SQLException e) {
