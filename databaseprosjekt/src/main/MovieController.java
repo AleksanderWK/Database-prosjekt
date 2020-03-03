@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,19 +15,43 @@ public class MovieController extends DBConn {
 		
 	}
 	
-	public void movieQueryTest() {
+	public void addPerson(int personID, String name, int birthyear, String country) {
 		try {
-			currentStatement = conn.prepareStatement("select * from verk");
-			ResultSet result = currentStatement.executeQuery();
-			int currentRow = 1;
-			while (result.next()) {
-				System.out.println(result.getString("tittel"));
-				currentRow++;
-			}
+			currentStatement = conn.prepareStatement("insert into Person values(?, ?, ?, ?)");
+			currentStatement.setInt(1, personID);
+			currentStatement.setString(2, name);
+			currentStatement.setInt(3, birthyear);
+			currentStatement.setString(4, country);
+			currentStatement.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Couldn't add Person");
 		}
+	}
+	
+	public void addMovie(int movieID, String title, int length, int releaseYear, Date releaseDate, String description) {
+		try {
+			currentStatement = conn.prepareStatement("insert into Verk values(?, ?, ?, ?, ?, ?)");
+			currentStatement.setInt(1, movieID);
+			currentStatement.setString(2, title);
+			currentStatement.setInt(3, length);
+			currentStatement.setInt(4, releaseYear);
+			currentStatement.setDate(5, releaseDate);
+			currentStatement.setString(6, description);
+			currentStatement.execute();
+			
+			currentStatement = conn.prepareStatement("insert into Film values(?)");
+			currentStatement.setInt(1, movieID);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't add Movie");
+		}
+	}
+	
+	public void addActorToVerk(int personID, int verkID, String role) {
+		
+	}
+	
+	public void addPersonWorkingOnMovie(int personID, int verkID, String type) {
 		
 	}
 	
@@ -68,6 +93,24 @@ public class MovieController extends DBConn {
 		return roleNames;
 	}
 	
+	public Collection<String[]> getAllPersons() {
+		Collection<String[]> actorRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select personID, navn, foedselsaar, foedselsland "
+					+ "from person"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("personID")).toString(), result.getString("navn"), result.getString("foedselsaar"), result.getString("foedselsland")};
+				actorRows.add(row);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actorRows;
+	}
+	
 	public Collection<String[]> getAllActors() {
 		Collection<String[]> actorRows = new ArrayList<String[]>();
 		try {
@@ -78,6 +121,29 @@ public class MovieController extends DBConn {
 			ResultSet result = currentStatement.executeQuery();
 			while (result.next()) {
 				String[] row = {((Integer) result.getInt("personID")).toString(), result.getString("navn"), result.getString("foedselsaar"), result.getString("foedselsland")};
+				actorRows.add(row);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actorRows;
+	}
+	
+	public Collection<String[]> getAllVerk() {
+		Collection<String[]> actorRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from verk"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("verkID")).toString(),
+							result.getString("tittel"), 
+							((Integer) result.getInt("lengde")).toString(),
+							((Integer) result.getInt("utgivelsesaar")).toString(),
+							result.getString("lanseringsdato"),
+							result.getString("innhold")};
 				actorRows.add(row);
 			}
 		} catch (SQLException e) {
