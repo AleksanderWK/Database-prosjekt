@@ -244,7 +244,6 @@ public class MovieController extends DBConn {
 		return moviesFromActor;
 	}
 	
-	
 	public Collection<String[]> mostMoviesInGeneres(){
 		Collection<String[]> r = new ArrayList<>();
 		try {
@@ -266,7 +265,26 @@ public class MovieController extends DBConn {
 		return r;
 	}
 	
-	
-	
+	public Collection<String[]> getAllReviews() {
+		Collection<String[]> reviewRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from Anmeldelse"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("brukerID")).toString(),
+								((Integer) result.getInt("verkID")).toString(),
+								((Integer) result.getInt("raiting")).toString(),
+								result.getString("kommentar")
+								};
+				reviewRows.add(row);
+			}
+		} catch (SQLException e) {
+			System.out.println("Couldn't get all reviews.");
+		}
+		return reviewRows;
+	}
 	
 }
