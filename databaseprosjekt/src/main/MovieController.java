@@ -107,6 +107,19 @@ public class MovieController extends DBConn {
 		}
 	}
 	
+	public void addReview(int brukerID, int verkID, int rating, String kommentar) {
+		try {
+			currentStatement = conn.prepareStatement("insert into Anmeldelse values(?, ?, ?, ?)");
+			currentStatement.setInt(1, brukerID);
+			currentStatement.setInt(2, verkID);
+			currentStatement.setInt(3, rating);
+			currentStatement.setString(4, kommentar);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't add Review");
+		}
+	}
+	
 	public Collection<String> roleNamesOfActor(int actorID) {
 		Collection<String> roleNames = new ArrayList<String>();
 		try {
@@ -265,6 +278,27 @@ public class MovieController extends DBConn {
 		return r;
 	}
 	
+	public Collection<String[]> getAllUsers() {
+		Collection<String[]> userRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from Bruker"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("brukerID")).toString(),
+								result.getString("brukernavn"),
+								result.getString("epost"),
+								};
+				userRows.add(row);
+			}
+		} catch (SQLException e) {
+			System.out.println("Couldn't get users.");
+		}
+		return userRows;
+	}
+	
 	public Collection<String[]> getAllReviews() {
 		Collection<String[]> reviewRows = new ArrayList<String[]>();
 		try {
@@ -282,7 +316,7 @@ public class MovieController extends DBConn {
 				reviewRows.add(row);
 			}
 		} catch (SQLException e) {
-			System.out.println("Couldn't get all reviews.");
+			System.out.println("Couldn't get reviews.");
 		}
 		return reviewRows;
 	}
