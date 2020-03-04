@@ -17,7 +17,7 @@ public class Main {
 			System.out.println("4. Add a person to the database.");
 			System.out.println("5. Add a company to the database.");
 			System.out.println("6. Add a movie to the database.");
-			System.out.println("7. Add a new review of an episode of a series to the database.");
+			System.out.println("7. Add a review of a movie, episode or series.");
 			System.out.println("What action do you want to make? (0 for quit)");
 			
 			Scanner scanner = new Scanner(System.in);
@@ -141,9 +141,28 @@ public class Main {
 				}
 				break;
 			case 7:
+				System.out.println("Recorded reviews:");
+				printTable(movieCtrl.getAllReviews());
+				System.out.println("Registered users:");
+				printTable(movieCtrl.getAllUsers());
+				System.out.println("ID of your user: ");
+				int brukerID = Integer.parseInt(scanner.nextLine());
+				printTable(movieCtrl.getAllVerk());
+				System.out.println("ID of title: ");
+				int verkID = Integer.parseInt(scanner.nextLine());
 				
+				int rating = 0;
+				while (!(rating >= 1 && rating <= 10)) {
+					System.out.println("Rating (1-10): ");
+					rating = Integer.parseInt(scanner.nextLine());
+				}
+
+				System.out.println("Review text: ");
+				String kommentar = scanner.nextLine();
+				
+				movieCtrl.addReview(brukerID, verkID, rating, kommentar);
+				System.out.println("Successfully added the review!");
 				break;
-			
 			default:
 				System.out.println("Not valid input try again:");
 				break;
