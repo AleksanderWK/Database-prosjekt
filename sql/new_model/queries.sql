@@ -37,3 +37,6 @@ from media;
 select *
 from ansattiverk natural join person
 where ansattType = "Regissoer" or ansattType = "Regissør";
+
+select * from skuespilleriverk;
+select * from ansattiverk;

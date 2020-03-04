@@ -15,8 +15,9 @@ public class Main {
 			System.out.println("2. Get all movies a given actor have played in.");
 			System.out.println("3. Get the companies that makes most movies in each genre.");
 			System.out.println("4. Add a person to the database.");
-			System.out.println("5. Add a movie to the database.");
-			System.out.println("6. Add a new review of an episode of a series to the database.");
+			System.out.println("5. Add a company to the database.");
+			System.out.println("6. Add a movie to the database.");
+			System.out.println("7. Add a new review of an episode of a series to the database.");
 			System.out.println("What action do you want to make? (0 for quit)");
 			
 			Scanner scanner = new Scanner(System.in);
@@ -53,6 +54,18 @@ public class Main {
 				movieCtrl.addPerson(personID, name, birthyear, country);
 				break;
 			case 5:
+				printTable(movieCtrl.getAllCompanies());
+				System.out.println("ID of new Company: ");
+				int companyID = Integer.parseInt(scanner.nextLine());
+				System.out.println("Name/Adresse of new Company: ");
+				String adress = scanner.nextLine();
+				System.out.println("URL of company: ");
+				String URL = scanner.nextLine();
+				System.out.println("Country Company: ");
+				country = scanner.nextLine();
+				movieCtrl.addCompany(companyID, adress, URL, country);
+				break;
+			case 6:
 				printTable(movieCtrl.getAllVerk());
 				System.out.println("ID of new Movie: ");
 				int movieID = Integer.parseInt(scanner.nextLine());
@@ -104,8 +117,30 @@ public class Main {
 					
 					movieCtrl.addPersonWorkingOnMovie(personID, movieID, "Manusforfatter");
 				}
+				
+				printTable(movieCtrl.getAllGenres());
+				System.out.println("Add Genres: (press enter on empty line to stop adding)");
+				while (true) {
+					System.out.println("Genres ID: ");
+					String line = scanner.nextLine();
+					if (line.isEmpty()) break;
+					int genreID = Integer.parseInt(line);
+					
+					movieCtrl.addGenreToVerk(movieID, genreID);
+				}
+				
+				printTable(movieCtrl.getAllCompanies());
+				System.out.println("Add Companies: (press enter on empty line to stop adding)");
+				while (true) {
+					System.out.println("Company ID: ");
+					String line = scanner.nextLine();
+					if (line.isEmpty()) break;
+					companyID = Integer.parseInt(line);
+					
+					movieCtrl.addCompanyToVerk(companyID, movieID);
+				}
 				break;
-			case 6:
+			case 7:
 				
 				break;
 			

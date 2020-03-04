@@ -28,6 +28,19 @@ public class MovieController extends DBConn {
 		}
 	}
 	
+	public void addCompany(int companyID, String adress, String URL, String country) {
+		try {
+			currentStatement = conn.prepareStatement("insert into Selskap values(?, ?, ?, ?)");
+			currentStatement.setInt(1, companyID);
+			currentStatement.setString(2, adress);
+			currentStatement.setString(3, URL);
+			currentStatement.setString(4, country);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't add Company");
+		}
+	}
+	
 	public void addMovie(int movieID, String title, int length, int releaseYear, Date releaseDate, String description) {
 		try {
 			currentStatement = conn.prepareStatement("insert into Verk values(?, ?, ?, ?, ?, ?)");
@@ -72,22 +85,26 @@ public class MovieController extends DBConn {
 		}
 	}
 	
-	public Collection<String> roleNamesOfActorByName(String actorName) {
+	public void addGenreToVerk(int verkID, int sjangerID) {
 		try {
-			currentStatement = conn.prepareStatement(
-					"select distinct personID "
-					+ "from skuespilleriverk natural join person "
-					+ "where navn = ?"
-				);
-			currentStatement.setString(1, actorName);
-			ResultSet result = currentStatement.executeQuery();
-			result.next();
-			int actorId = result.getInt("personID");
-			return roleNamesOfActor(actorId);
+			currentStatement = conn.prepareStatement("insert into VerkSjanger values (?, ?)");
+			currentStatement.setInt(1, verkID);
+			currentStatement.setInt(2, sjangerID);
+			currentStatement.execute();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return new ArrayList<String>();
-		}		
+			System.out.println("Couldn't Add Genre to Verk");
+		}
+	}
+	
+	public void addCompanyToVerk(int companyID, int verkID) {
+		try {
+			currentStatement = conn.prepareStatement("insert into SelskapVerk values (?, ?)");
+			currentStatement.setInt(1, companyID);
+			currentStatement.setInt(2, verkID);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't Add Company to Verk");
+		}
 	}
 	
 	public Collection<String> roleNamesOfActor(int actorID) {
@@ -164,9 +181,48 @@ public class MovieController extends DBConn {
 				actorRows.add(row);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Couldn't get All Verks");
 		}
 		return actorRows;
+	}
+	
+	public Collection<String[]> getAllCompanies() {
+		Collection<String[]> companyRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from Selskap"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("selskapID")).toString(),
+							result.getString("adresse"), 
+							result.getString("url"),
+							result.getString("land")};
+				companyRows.add(row);
+			}
+		} catch (SQLException e) {
+			System.out.println("Couldn't get all companies");
+		}
+		return companyRows;
+	}
+	
+	public Collection<String[]> getAllGenres() {
+		Collection<String[]> genreRows = new ArrayList<String[]>();
+		try {
+			currentStatement = conn.prepareStatement(
+					"select * "
+					+ "from Sjanger"
+					);
+			ResultSet result = currentStatement.executeQuery();
+			while (result.next()) {
+				String[] row = {((Integer) result.getInt("sjangerID")).toString(), result.getString("navn")};
+				genreRows.add(row);
+			}
+		} catch (SQLException e) {
+			System.out.println("Couldn't get all Genres");
+		}
+		return genreRows;
 	}
 	
 	public Collection<String[]> getMoviesFromActor(String ActorName){
@@ -187,6 +243,7 @@ public class MovieController extends DBConn {
 		}
 		return moviesFromActor;
 	}
+	
 	
 	public Collection<String[]> mostMoviesInGeneres(){
 		Collection<String[]> r = new ArrayList<>();
