@@ -48,11 +48,28 @@ public class MovieController extends DBConn {
 	}
 	
 	public void addActorToVerk(int personID, int verkID, String role) {
+		try {
+			currentStatement = conn.prepareStatement("insert into SkuespillerIVerk values (?, ?, ?)");
+			currentStatement.setInt(1, personID);
+			currentStatement.setInt(2, verkID);
+			currentStatement.setString(3, role);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't Add Actor to Verk");
+		}
 		
 	}
 	
 	public void addPersonWorkingOnMovie(int personID, int verkID, String type) {
-		
+		try {
+			currentStatement = conn.prepareStatement("insert into AnsattIVerk values (?, ?, ?)");
+			currentStatement.setInt(1, personID);
+			currentStatement.setInt(2, verkID);
+			currentStatement.setString(3, type);
+			currentStatement.execute();
+		} catch (SQLException e) {
+			System.out.println("Couldn't Add Person to Verk");
+		}
 	}
 	
 	public Collection<String> roleNamesOfActorByName(String actorName) {
