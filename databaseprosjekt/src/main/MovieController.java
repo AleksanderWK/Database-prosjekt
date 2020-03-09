@@ -265,7 +265,7 @@ public class MovieController extends DBConn {
 					"from (select adresse as Selskap, navn as Sjanger, count(navn) as antallFilmer " + 
 					"		from ((((verk natural join verksjanger) natural join selskapverk) natural join sjanger) natural join selskap) " + 
 					"		group by adresse, navn) as SSF " + 
-					"group by sjanger, selskap");
+					"group by sjanger");
 			ResultSet result = currentStatement.executeQuery();
 			while(result.next()) {
 				String[] record = {result.getString("sjanger"), result.getString("selskap"), result.getString("Max antall")}; //adresse er navn på selskap (?)
