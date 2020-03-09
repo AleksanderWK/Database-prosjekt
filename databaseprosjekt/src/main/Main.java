@@ -32,10 +32,9 @@ public class Main {
 				System.out.println("All actor roles: " + movieCtrl.roleNamesOfActor(actorID));
 				break;
 			case 2:
-				Scanner scanner2 = new Scanner(System.in); //fungerte kun med nextLine() hvis jeg lagde en egen scanner her. 
+				printTable(movieCtrl.getAllActors());
 				System.out.println("Write the name of the actor: ");
-				String actor = scanner2.nextLine();
-				scanner2.close();
+				String actor = scanner.nextLine();
 				printTable(movieCtrl.getMoviesFromActor(actor));
 				break;
 			case 3:
@@ -167,8 +166,8 @@ public class Main {
 				System.out.println("Not valid input try again:");
 				break;
 			}
+
 		}
-		
 	}
 	
 	public static void printTable(Collection<String[]> tableData) {
