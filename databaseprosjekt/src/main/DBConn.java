@@ -24,8 +24,8 @@ public class DBConn {
     		String schemaName = scanner.nextLine();
     		
             //Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Class.forName("com.mysql.cj.jdbc.Driver"); // when you are using MySQL 8.0.	    
-            // Properties for user and password.
+            Class.forName("com.mysql.cj.jdbc.Driver"); // when you are using MySQL 8.0.    
+            // Properties for user and password. 
             Properties p = new Properties(); // 123
             p.put("user", user);
             p.put("password", password);           
