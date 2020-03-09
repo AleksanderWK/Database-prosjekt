@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MovieController extends DBConn {
+public class MovieDBController extends DBConn {
 	
 	private PreparedStatement currentStatement;	
 	
-	public MovieController() {
+	public MovieDBController() {
 		
 	}
 	

@@ -8,7 +8,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		MovieController movieCtrl = new MovieController();
+		MovieDBController movieCtrl = new MovieDBController();
 		movieCtrl.connect();
 		while (true) {
 			System.out.println("1. Get all roles of a given actor.");
